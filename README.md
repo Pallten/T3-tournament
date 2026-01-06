@@ -42,7 +42,7 @@ git clone https://github.com/yourusername/dart_tournament_web
 
 4. Import the database schema using phpMyAdmin or another MySQL client
 
-5. Configure database credentials in `config.php`
+5. Configure database credentials in `koppling.php`
 
 ```php
 $host = "localhost";
