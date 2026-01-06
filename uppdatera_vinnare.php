@@ -1,21 +1,22 @@
 <?php
-// Inkludera databasanslutningen
-include('koppling.php');  // Säkerställ att denna pekar på rätt fil
+// Include the database connection
+include('connection.php'); 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Hämta data från AJAX
+    // Retrieve data from AJAX
     $winnerId = $_POST['winner_id'];
     $matchId = $_POST['match_id'];
 
-    // Använd prepared statements för att uppdatera databasen
+    // Use prepared statements to update the database
     $sql = "UPDATE matches SET Winner = :winnerId WHERE MatchId = :matchId";
     $stmt = $pdo->prepare($sql);
 
-    // Binda parametrarna för säkerhet och kör frågan
+    // Bind the security parameters and run the query
     if ($stmt->execute(['winnerId' => $winnerId, 'matchId' => $matchId])) {
-        echo "Vinnaren för matchen med MatchId $matchId har uppdaterats!";
+        echo "The winner for the match with MatchId $matchId has been updated!";
     } else {
-        echo "Fel vid uppdatering.";
+        echo "Error during update.";
     }
 }
 ?>
+
