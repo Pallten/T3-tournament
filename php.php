@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skapa Turnering</title>
+    <title>Create Tournament</title>
     <link rel="stylesheet" href="php.css">
 </head>
 <body>
-    <h1>Skapa Turnering</h1>
+    <h1>Create Tournament</h1>
 
     <?php
     // Include database connection
@@ -16,23 +16,23 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Get data from the form
         $tournamentTurneringsnamn = $_POST['tournament_name'];
-        $selectedPlayers = $_POST['player_selection']; // Array med valda spelare
+        $selectedPlayers = $_POST['player_selection']; // Array with chosen players
         $typeOfGame = $_POST['TypeOfGame'];
         $maxThrow = $_POST['maxThrow'];
 
 
         try {
             // Create the tournament
-            $tournamentSize = count($selectedPlayers); // Antal spelare baserat på valda
+            $tournamentSize = count($selectedPlayers); // Number of players based on selected
             $stmt = $pdo->prepare('INSERT INTO tournament (Turneringsnamn, Size, game, maxThrow) VALUES (:name, :size, :game, :maxThrow)');
             $stmt->execute(['name' => $tournamentTurneringsnamn, 'size' => $tournamentSize, 'game'=>$typeOfGame, 'maxThrow'=>$maxThrow]);
-            $tournament_id = $pdo->lastInsertId(); // Hämta ID för den nyss skapade turneringen
+            $tournament_id = $pdo->lastInsertId(); // Get the ID of the newly created tournament
 
             // Total number of matches should be tournamentSize - 1
             $totalMatches = $tournamentSize - 1;
 
             // Shuffle the players
-            shuffle($selectedPlayers); // Slumpar ordningen på spelarna
+            shuffle($selectedPlayers);
 
             // Add selected players to the tournament and get PlayerId
             $stmtPlayer = $pdo->prepare('INSERT INTO Players (TournamentId, PlayerId, Name, Position) 
@@ -46,7 +46,7 @@
                 $stmtPlayer->execute([
                     'tournament_id' => $tournament_id,
                     'name' => $player_name,
-                    'position' => $index // Använd index som position
+                    'position' => $index // Use index as position
                 ]);
                 // Get PlayerId after the player has been added
                 $playerIdStmt = $pdo->prepare('SELECT PlayerId FROM Players WHERE TournamentId = :tournament_id AND Name = :name');
@@ -97,7 +97,7 @@
             $matches = $stmtFetchMatches->fetchAll(PDO::FETCH_ASSOC);
 
             foreach ($matches as $match) {
-                // Hämta den nuvarande positionen
+                // Fetch current position
                 $position = $match['Position'];
                 $stmtMatch = $pdo->prepare("UPDATE matches SET Player1 = :player1, Player2 = :player2 WHERE TournamentId = :tournament_id AND Position = :position");
                 $stmtMatch->execute([
@@ -106,19 +106,19 @@
                     'player1' => isset($playerIds[$totalMatches - $playerIndex]) ? $playerIds[$totalMatches - $playerIndex] : null,
                     'player2' => isset($playerIds[$totalMatches - $playerIndex - 1]) ? $playerIds[$totalMatches - $playerIndex - 1] : null
                 ]);
-                $playerIndex += 2; // Öka med 2 för nästa match
+                $playerIndex += 2; // Increase by 2 for the next match
             }
 
-            // Bekräftelsemeddelande med turneringens spelare
+            // Confirmation message with tournament players
             echo '<div class="confirmation">';
-            echo '<h2>Turnering skapad med följande spelare</h2>';
+            echo '<h2>Tournament created with the following players</h2>';
             echo implode(', <br>', array_map('htmlspecialchars', $selectedPlayers));
-            echo '<br><a href="uppstallning.php" class="button">Gå vidare till turneringen</a>'; // Länk för att gå vidare till turneringen
+            echo '<br><a href="uppstallning.php" class="button">Proceed to the tournament</a>'; // Link to proceed to the tournament
             echo '</div>';
         
 
         } catch (Exception $e) {
-            // Logga och hantera fel
+            // Log and handle errors
             error_log($e->getMessage());
             echo 'Ett fel uppstod vid skapandet av turneringen: ' . htmlspecialchars($e->getMessage());
         }
@@ -127,4 +127,5 @@
 
 </body>
 </html>
+
 
