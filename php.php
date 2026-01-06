@@ -11,7 +11,7 @@
 
     <?php
     // Include database connection
-    require 'koppling.php';
+    require 'connection.php';
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Get data from the form
@@ -127,3 +127,4 @@
 
 </body>
 </html>
+
