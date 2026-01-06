@@ -1,0 +1,86 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #2C2A29;
+    color: #E0D8D1;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+h1 {
+    text-align: center;
+    color: #D4A373;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 36px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    max-width: 800px;
+    margin-bottom: 20px;
+}
+
+form {
+    background-color: #3B3734;
+    padding: 20px;
+    border-radius: 10px;
+
+    border: 1px solid #D4A373;
+    max-width: 600px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+button,
+a.button {
+    background-color: transparent;
+    color: #D4A373;
+    padding: 12px 20px;
+    border: 2px solid #D4A373;
+    border-radius: 50px;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+button:hover,
+a.button:hover {
+    background-color: #D4A373;
+    color: #2C2A29;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px);
+}
+
+.confirmation {
+    background-color: #3B3734;
+    color: #E0D8D1;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid #D4A373;
+    font-weight: bold;
+}
+
+/* Snyggare stil för texten 'Turnering skapad med följande spelare:' */
+.confirmation h2 {
+    color: #F0C27B;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 13px;
+    text-align: center;
+
+}

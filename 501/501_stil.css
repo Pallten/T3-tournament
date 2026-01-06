@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+    padding: 20px;
+}
+
+.player-container {
+    display: flex;
+    /* Använd flexbox för att visa spelarna bredvid varandra */
+    justify-content: center;
+    /* Centrera spelarna horisontellt */
+}
+
+.player {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    width: 200px;
+    /* Sätt en fast bredd för spelarna */
+}
+
+.active {
+    background-color: #d3f9d3;
+    /* Ljusgrön för aktiv spelare */
+}
+
+input[type="number"] {
+    width: 100px;
+    height: 30px;
+    text-align: center;
+}
+
+.input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+button {
+    margin-left: 10px;
+}
+
+.last-scores {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+
+.numpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.numpad button {
+    padding: 20px;
+    font-size: 18px;
+}

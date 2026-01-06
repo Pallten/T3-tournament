@@ -1,0 +1,114 @@
+/* Allmän stil för hela sidan */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #2C2A29;
+    color: #E0D8D1;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+h1 {
+    text-align: center;
+    color: #D4A373;
+    text-shadow: 2px 2px 5px black;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    width: 100%;
+    max-width: 800px;
+}
+
+/* Stilar för stycken (p-taggar) */
+p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #E0D8D1;
+    margin: 10px 0;
+}
+
+/* Stilar för matchlistan */
+.match-list {
+    width: 100%;
+    max-width: 800px;
+    background-color: #3B3734;
+    border: 1px solid #D4A373;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.match-item {
+    background-color: #4B4745;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 2px solid #D4A373;
+    transition: all 0.3s ease;
+}
+
+.match-item:hover {
+    background-color: #D4A373;
+    color: #2C2A29;
+}
+
+.match-info {
+    font-size: 18px;
+    margin-bottom: 5px;
+    color: #E0D8D1;
+}
+
+/* Stilar för länkar (a-taggar) */
+a {
+    color: #D4A373;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #F0C27B;
+    text-decoration: underline;
+}
+
+.match-link {
+    color: #D4A373;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.match-link:hover {
+    color: #F0C27B;
+}
+
+.completed-match {
+    color: #F0C27B;
+    font-weight: bold;
+}
+
+/* Länk till skapa matcher */
+a.create-link {
+    color: #D4A373;
+    text-decoration: none;
+    font-weight: bold;
+    border: 2px solid #D4A373;
+    padding: 10px 20px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+a.create-link:hover {
+    background-color: #D4A373;
+    color: #2C2A29;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px);
+}

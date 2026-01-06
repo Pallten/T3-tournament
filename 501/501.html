@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>501 Dart Game</title>
+    <link rel="stylesheet" href="501_stil.css" type="text/css"> <!-- Länka till CSS-filen -->
+</head>
+
+<body>
+    <h1>501 Dart Game</h1>
+    <div class="player-container">
+        <div id="player1" class="player active">
+            <h2>Spelare 1</h2>
+            <p>Poäng: <span id="score1">501</span></p>
+            <p>Senaste poäng: <span id="lastScore1">0</span></p> <!-- Ny rad för senaste poäng -->
+        </div>
+
+        <div id="player2" class="player">
+            <h2>Spelare 2</h2>
+            <p>Poäng: <span id="score2">501</span></p>
+            <p>Senaste poäng: <span id="lastScore2">0</span></p> <!-- Ny rad för senaste poäng -->
+        </div>
+    </div>
+
+    <input type="text" id="scoreInput" placeholder="Ange poäng" />
+<div class="numpad">
+    <button onclick="addToInput('1')">1</button>
+    <button onclick="addToInput('2')">2</button>
+    <button onclick="addToInput('3')">3</button>
+    <button onclick="addToInput('4')">4</button>
+    <button onclick="addToInput('5')">5</button>
+    <button onclick="addToInput('6')">6</button>
+    <button onclick="addToInput('7')">7</button>
+    <button onclick="addToInput('8')">8</button>
+    <button onclick="addToInput('9')">9</button>
+    <button onclick="addToInput('0')">0</button>
+    <button onclick="submitScore()">Skicka</button>
+</div>
+
+    <h3>Senaste poäng</h3>
+    <div id="latest-scores"></div>
+
+
+    <div class="last-scores">
+        <h3>Senaste uppfyllda poäng:</h3>
+        <p>Spelare 1: <span id="recentScore1">0</span></p>
+        <p>Spelare 2: <span id="recentScore2">0</span></p>
+    </div>
+    <div class="wins">
+        <h3>Vinster:</h3>
+        <p>Spelare 1: <span id="player1Wins">0</span></p>
+        <p>Spelare 2: <span id="player2Wins">0</span></p>
+    </div>
+    <script src="kalkyl.js"></script> <!-- Länka till JavaScript-filen -->
+</body>
+
+</html>
