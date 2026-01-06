@@ -1,55 +1,55 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Uppställning</title>
+    <title>Lineup</title>
     <link rel="stylesheet" href="uppstallning.css">
 
 </head>
 
 <body>
-    <a href="create.php">Gå till skapa matcher</a>
+    <a href="create.php">Go to create matches</a>
 
     <?php
-    // Inkludera databasanslutningen
-    require 'koppling.php';
+    // Include database connection
+    require 'connection.php';
 
     try {
-        // Hämta den senaste turneringen
+        // Get the latest tournament
         $stmt = $pdo->query('SELECT * FROM tournament WHERE TournamentId = (SELECT MAX(TournamentId) FROM tournament)');
         $tournament = $stmt->fetch();
 
         if ($tournament) {
-            echo "<h1>Uppställning för turnering: " . htmlspecialchars($tournament['Turneringsnamn']) . "</h1>";
+            echo "<h1>Lineup for tournament: " . htmlspecialchars($tournament['Turneringsnamn']) . "</h1>";
 
-            // Hämta alla matcher för denna turnering
+            // Get all matches for this tournament
             $stmtMatches = $pdo->prepare('SELECT * FROM matches WHERE TournamentId = :tournament_id ORDER BY Round, Position');
             $stmtMatches->execute(['tournament_id' => $tournament['TournamentId']]);
             $matches = $stmtMatches->fetchAll();
 
 
-            // Funktion för att beräkna ny position
+            // Function to calculate new position
             function calculateNewPosition($currentPosition, $tournamentSize)
             {
-                // Kolla om nuvarande position är giltig (bör vara mindre än eller lika med turneringsstorlek)
+                // Check if current position is valid (should be less than or equal to tournament size)
                 if ($currentPosition >= 1 && $currentPosition < $tournamentSize) {
-                    // Beräkna ny position genom att dela med 2 (för att halvera positionen i nästa runda)
+                    // Calculate new position by dividing by 2 (to halve the position in the next round)
                     return intval($currentPosition / 2);
                 }
-                return null; // Om det inte finns fler positioner att flytta till
+                return null; // If there are no more positions to move to
             }
 
 
 
-            // Funktion för att hämta spelarnamn
+            // Function to get player name
             function getPlayerName($pdo, $playerId)
             {
                 $stmt = $pdo->prepare('SELECT p.Name FROM people p JOIN players pl ON p.id = pl.PlayerId WHERE pl.PlayerId = :player_id');
                 $stmt->execute(['player_id' => $playerId]);
                 $player = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                return $player ? htmlspecialchars($player['Name']) : ''; // Returnera namnet eller en standardtext
+                return $player ? htmlspecialchars($player['Name']) : ''; // Return the name or a default text
             }
 
 
@@ -58,18 +58,18 @@
                 if (array_key_exists('Winner', $match)) {
                     if (!is_null($match['Winner'])) {
 
-                        // Hämta den senaste turneringen inklusive storlek
+                        // Get the latest tournament including size
                         $stmt = $pdo->query('SELECT * FROM tournament WHERE TournamentId = (SELECT MAX(TournamentId) FROM tournament)');
                         $tournament = $stmt->fetch();
-                        $tournamentSize = $tournament['Size']; // Lägg till turneringsstorlek
+                        $tournamentSize = $tournament['Size']; // Add tournament size
     
-                        // Bestäm ny position för vinnaren
+                        // Determine new position for the winner
                         $newPosition = calculateNewPosition($match['Position'], $tournamentSize);
 
 
-                        if ($newPosition !== null) { // Kontrollera om ny position är giltig
+                        if ($newPosition !== null) { // Check if new position is valid
                             if ($match['Position'] % 2 == 0) {
-                                // Om positionen är jämn, placera vinnaren i Player2
+                                // If position is even, place winner in Player2
                                 $stmtUpdate = $pdo->prepare('UPDATE matches 
                                     SET Player2 = :winner 
                                     WHERE TournamentId = :tournament_id AND Position = :new_position');
@@ -79,7 +79,7 @@
                                     'new_position' => $newPosition
                                 ]);
                             } else {
-                                // Om positionen är udda, placera vinnaren i Player1
+                                // If position is odd, place winner in Player1
                                 $stmtUpdate = $pdo->prepare('UPDATE matches 
                                     SET Player1 = :winner 
                                     WHERE TournamentId = :tournament_id AND Position = :new_position');
@@ -90,48 +90,48 @@
                                 ]);
                             }
                         } else {
-                            echo "<br>Ingen giltig ny position för match " . htmlspecialchars($match['MatchId']);
+                            echo "<br>No valid new position for match " . htmlspecialchars($match['MatchId']);
                         }
                     } else {
 
                     }
                 } else {
-                    echo "<br>Winner-fältet hittades inte i match: " . htmlspecialchars($match['MatchId']);
+                    echo "<br>Winner field not found in match: " . htmlspecialchars($match['MatchId']);
                 }
             }
 
             if (count($matches) > 0) {
                 foreach ($matches as $match) {
                     if ($match['Winner'] === NULL) {
-                        // Hämta spelarnas ID:n
-                        $player1Id = $match['Player1']; // Det är ID:t för spelare 1
-                        $player2Id = $match['Player2']; // Det är ID:t för spelare 2
+                        // Get the players' IDs
+                        $player1Id = $match['Player1']; // It is the ID for player 1
+                        $player2Id = $match['Player2']; // It is the ID for player 2
     
-                        // Hämta spelarnamn baserat på PlayerId
+                        // Get player names based on PlayerId
                         $player1Name = getPlayerName($pdo, $player1Id);
                         $player2Name = getPlayerName($pdo, $player2Id);
 
-                        // Visa information om matchen och skapa länk till matcher.php
+                        // Display match information and create link to matcher.php
     
-                        echo "<p>Match " . htmlspecialchars($match['Position']) . " i runda " . htmlspecialchars($match['Round']) . " <br>MatchID " . htmlspecialchars($match['MatchId']) . ":<br> " .
-                            "<input type='hidden' name='match_id' value='" . htmlspecialchars($match['MatchId']) . "'>" . // Dold fält för match_id
+                        echo "<p>Match " . htmlspecialchars($match['Position']) . " in round " . htmlspecialchars($match['Round']) . " <br>MatchID " . htmlspecialchars($match['MatchId']) . ":<br> " .
+                            "<input type='hidden' name='match_id' value='" . htmlspecialchars($match['MatchId']) . "'>" . // Hidden field for match_id
                             "<a href='matcher.php?match_id=" . htmlspecialchars($match['MatchId']) . "&winner_id=" . htmlspecialchars($player1Id) . "'>" . $player1Name . "</a> " .
                             "vs " .
                             "<a href='matcher.php?match_id=" . htmlspecialchars($match['MatchId']) . "&winner_id=" . htmlspecialchars($player2Id) . "'>" . $player2Name . "</a></p>";
 
                     } else {
-                        // Hämta vinnarnamn för avslutade matcher
-                        $winnerId = $match['Winner']; // Anta att Winner är PlayerId
+                        // Get winner name for completed matches
+                        $winnerId = $match['Winner']; // Assume Winner is PlayerId
                         $winnerName = getPlayerName($pdo, $winnerId);
-                        echo "<p>Match " . htmlspecialchars($match['Position']) . " i runda " . htmlspecialchars($match['Round']) . " <br>MatchID " . htmlspecialchars($match['MatchId']) . ":<br> AVKLARAD, vinnare " . $winnerName . "</p>";
+                        echo "<p>Match " . htmlspecialchars($match['Position']) . " in round " . htmlspecialchars($match['Round']) . " <br>MatchID " . htmlspecialchars($match['MatchId']) . ":<br> COMPLETED, winner " . $winnerName . "</p>";
                     }
                 }
             } else {
-                echo "<p>Inga matcher hittades.</p>";
+                echo "<p>No matches found.</p>";
             }
         }
     } catch (Exception $e) {
-        echo "<p>Ett fel uppstod: " . htmlspecialchars($e->getMessage()) . "</p>";
+        echo "<p>An error occurred: " . htmlspecialchars($e->getMessage()) . "</p>";
     }
     ?>
 </body>
