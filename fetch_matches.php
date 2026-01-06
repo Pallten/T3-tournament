@@ -1,5 +1,5 @@
 <?php
-require 'koppling.php';
+require 'connection.php';
 
 try {
     $stmt = $pdo->prepare('
@@ -21,6 +21,7 @@ try {
     echo json_encode(['error' => $e->getMessage()]);
 }
 ?>
+
 
 
 //FUNGERAR INTE FÖR NU!
