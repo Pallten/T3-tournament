@@ -3,23 +3,23 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Skapa Turnering</title>
+    <title>Create Tournament</title>
     <link rel="stylesheet" href="create.css">
     <script>
-        // Funktion för att uppdatera antalet valda spelare
+        //Function for updating number of players
         function updatePlayerCount() {
-            // Hämta alla checkboxar
+            // Fetch all boxes
             const checkboxes = document.querySelectorAll('input[name="player_selection[]"]');
             let count = 0;
 
-            // Räkna antalet markerade checkboxar
+            // Count the number of checked boxes
             checkboxes.forEach((checkbox) => {
                 if (checkbox.checked) {
                     count++;
                 }
             });
 
-            // Uppdatera den dolda inputen med det valda antalet
+            // Update the hidden input with the selected number
             document.getElementById('tournament_size').value = count;
         }
     </script>
@@ -27,21 +27,21 @@
 </head>
 
 <body>
-    <h1>Skapa Ny Turnering</h1>
+    <h1>Create new tournament</h1>
     <form action="php.php" method="POST">
-        <label for="tournament_name">Turneringsnamn:</label>
+        <label for="tournament_name">Tournament name:</label>
         <input type="text" id="tournament_name" name="tournament_name" required>
         <br><br>
 
         
-            <label for="numberInput">Kast per match:</label>
+            <label for="numberInput">Throws per game:</label>
             <input type="number" id="maxThrow" name="maxThrow">
 
 
             <br><br>
 
 
-        <label for="TypeOfGame">Längd på spel:</label><br>
+        <label for="TypeOfGame">Game lenght:</label><br>
         <input type="radio" id="101" name="TypeOfGame" value="101">
         <label for="101">101</label><br>
         <input type="radio" id="301" name="TypeOfGame" value="301">
@@ -52,49 +52,50 @@
 
         <input type="hidden" id="tournament_size" name="tournament_size" value="0">
 
-        <label>Välj Spelare:</label><br>
+        <label>Chose players:</label><br>
         <?php
-        // Inkludera databasanslutningen
-        require 'koppling.php';
+        // Include the database connection
+        require 'connection.php';
 
-        // Hantera tillägg av nya spelare
+        // Manage the addition of new players
         if (isset($_POST['add'])) {
-            $name = $_POST['name']; // Ändrat från 'Turneringsnamn' till 'name'
+            $name = $_POST['name']; 
             $score = $_POST['score'];
-            $stmt = $pdo->prepare("INSERT INTO people (name, score) VALUES (:name, :score)"); // Använd parametrar för säkerhet
+            $stmt = $pdo->prepare("INSERT INTO people (name, score) VALUES (:name, :score)");
             $stmt->execute(['name' => $name, 'score' => $score]);
         }
 
         try {
-            // Hämta alla namn från "people" tabellen
+          // Use parameters for security
             $stmt = $pdo->query('SELECT name FROM people');
             $people = $stmt->fetchAll();
 
-            // Kontrollera om det finns några resultat
+            // Check if there are any results
             if (count($people) > 0) {
                 foreach ($people as $person) {
-                    // Lägg till onchange för att uppdatera antalet spelare
+                    // Add onchange to update the number of players
                     echo '<input type="checkbox" name="player_selection[]" value="' . htmlspecialchars($person['name']) . '" onchange="updatePlayerCount()">' . htmlspecialchars($person['name']) . '<br>';
                 }
             } else {
-                echo 'Inga namn funna i tabellen.';
+                echo 'No names found in the table.';
             }
         } catch (Exception $e) {
-            // Logga och hantera fel
+           // Log and handle errors
             error_log($e->getMessage());
-            echo 'Ett fel uppstod när namnen skulle hämtas.';
+            echo 'An error occurred while retrieving the names..';
         }
         ?>
         <br>
-        <button type="submit">Skapa Turnering</button>
+        <button type="submit">Create tournament</button>
     </form>
 
-    <h2>Ny spelare</h2>
+    <h2>New Player</h2>
     <form method="post">
         <input type="text" name="name" placeholder="Namn" required>
         <input type="number" name="score" value="0" required>
-        <button type="submit" name="add">Lägg till Spelare</button>
+        <button type="submit" name="add">Add player</button>
     </form>
 </body>
+
 
 </html>
