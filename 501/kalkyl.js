@@ -10,7 +10,7 @@ let selectedPlayer; // Global variabel för att lagra valet av spelare
 
 const matchId = document.querySelector('input[name="match_id"]').value;
 
-// Fokus på scoreInput när sidan laddas
+// Focus on scoreInput when page load
 window.onload = function () {
     document.getElementById("scoreInput").focus();
 };
